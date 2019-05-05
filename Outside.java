@@ -1,6 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-
+import java.util.ArrayList;
 
 class Outside
 {
@@ -9,8 +9,8 @@ class Outside
 
 	Outside()
 	{
-		soldiers = new soldiers();
-		bgImage = ImageLoader.load("outsideBG");
+		soldiers = new ArrayList<Soldier>();
+		bgImage = ImageLoader.load("outsideBG.png");
 	}
 
 	private void spawn()
@@ -44,7 +44,9 @@ class Outside
 	{
 		for(int i=0;i<soldiers.size();++i)
 		{
-			
+
 		}
+
+		return null;
 	}
 }

@@ -34,16 +34,16 @@ class Camp
 
 	public void drawMenu(Graphics g)
 	{
-		
+
 	}
 
 	public int checkMenuPress(int x, int y)
 	{
-		
+		return 0;
 	}
 
 	public int checkPress(int x, int y)
 	{
-
+		return 0;
 	}
 }

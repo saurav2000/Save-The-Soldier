@@ -6,15 +6,16 @@ class Healing
 	int[][] occupancy;
 	long[][] time;
 	int[][][] positions;
-	Image bgImage, minibedOcc, minibedUn;
+	Image bgImage, minibedOcc, minibedUn, entrance;
 	Healing()
 	{
 		occupancy = new int[6][4];
 		time = new long[6][4];
 		positions = new int[6][4][2];
-		bgImage = ImageLoader.load("images/healingBG.png");
-		minibedUn = ImageLoader.load("images/minibedUn.png");
-		minibedOcc = ImageLoader.load("images/minibedOcc.png");
+		bgImage = ImageLoader.load("healingBG.png");
+		minibedUn = ImageLoader.load("minibedUn.png");
+		minibedOcc = ImageLoader.load("minibedOcc.png");
+		entrance =  ImageLoader.load("healentrance.png");
 		initialise();
 	}
 
@@ -47,8 +48,8 @@ class Healing
 
 	public void draw(Graphics g)
 	{
-		g.draw(bgImage,250,250,null);
-		g.draw(entrance,0,450,null);
+		g.drawImage(bgImage,250,250,null);
+		g.drawImage(entrance,0,450,null);
 		for(int i=0;i<6;++i)
 		{
 			for(int j=0;j<4;++j)
