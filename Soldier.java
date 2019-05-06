@@ -6,19 +6,21 @@ class Soldier
 	long timeMillis;
 	long initialTime;
 
-	int posX,posY,timX,timY,r;
-	long dead;
+	int posX,posY,timX,timY,r,type;
+	long dead,treatment;
 
 	Image image;
-	boolean selected;
+	boolean selected, treated;
 
-	Soldier(int type, int x1, int y1, int x2, int y2, Image image)
+	Soldier(int type, int x1, int y1, Image image)
 	{
 		this.image = image;
+		this.type = type;
 		posX=x1;
 		posY=y1;
-		timX=x2;
-		timY=y2;
+		r=30;
+		timX=(x1+24);
+		timY=(y1-r);
 		if(type==0)
 			timeMillis = 6000;
 		else if(type==1)
@@ -27,6 +29,7 @@ class Soldier
 			timeMillis = 10000;
 		dead=0;
 		selected=false;
+		treated = false;
 		initialTime = System.currentTimeMillis();
 	}
 
@@ -38,7 +41,14 @@ class Soldier
 			dead = ((n-initialTime)*100)/timeMillis;
 			if(dead>100)
 				dead=100;
-		}		
+		}
+		else if(!treated)
+		{
+			long n = System.currentTimeMillis();
+			treatment = ((n-initialTime)*100)/timeMillis;
+			if(treatment>100)
+				treatment=100;
+		}
 	}
 
 	public void draw(Graphics g)
@@ -55,14 +65,25 @@ class Soldier
 	{
 		if(x>=timX-r && x<=timX+r && y>=timY-r && y<=timY+r)
 		{
-			selected=true;
 			return 0;
 		}
 		return -1;
 	}
 
+	public void setTreating(int power)
+	{
+		timeMillis = (power * 20 * 1000)/dead;
+		selected = true;
+		initialTime = System.currentTimeMillis();
+	}
+
 	public boolean isDead()
 	{
 		return dead>=100;
+	}
+
+	public boolean isTreated()
+	{
+		return treatment>=100;
 	}
 }

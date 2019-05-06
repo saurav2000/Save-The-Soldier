@@ -10,7 +10,7 @@ class ImageLoader
 		try{
 			img = ImageIO.read(new File("images/"+filename));
 		}
-		catch(IOException e){System.out.println("File not available");}
+		catch(IOException e){System.out.println(filename+" File not available");}
 
 		return img;
 	}

@@ -12,6 +12,9 @@ class Panel extends JPanel implements Runnable
 
 	private volatile int state = 0;
 	private Menu menu;
+	private Outside outside;
+	private Camp camp;
+	private Healing healing;
 	private Graphics dbg;
 	private Image dbImage = null;
 
@@ -22,21 +25,25 @@ class Panel extends JPanel implements Runnable
 		setFocusable(true);
 		requestFocus();
 
-		addMouseListener( new MouseAdapter( ) {
+		addMouseListener(new MouseAdapter(){
 			public void mousePressed(MouseEvent e)
 			{mousePress(e.getX(), e.getY());}
 		});
 
-		addKeyListener( new KeyAdapter( ) {
+		addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e)
 			{int keyCode = e.getKeyCode(); keyPress(keyCode);}
 		});
 
 		menu = new Menu();
+		outside = new Outside();
+		camp = new Camp();
+		healing = new Healing();
 	}
 
 	public void mousePress(int x, int y)
 	{
+		//Menu
 		if(state%10==0)
 		{
 			int a = menu.checkMouse(x,y,state/10);
@@ -50,6 +57,40 @@ class Panel extends JPanel implements Runnable
 				state = 30;
 			else if(a==0)
 				state = 0;
+		}
+		//Outside
+		else if(state%10==1)
+		{
+			int a = outside.checkPress(x,y);
+			if(a==1)
+				state=2;
+			else
+			{
+				Soldier sol = outside.checkMouse(x,y,camp.hasBed());
+				if(sol!=null)
+				{
+					state = 12;
+					camp.callMenu(sol);
+				}
+			}
+		}
+		//Camp
+		else if(state%10==2)
+		{
+			int a = camp.checkPress(x,y,state/10);
+			if(a==1)
+				state = 2;
+			else if(a==2)
+				state = 1;
+			else if(a==3)
+				state = 3;
+		}
+		//healing
+		else if(state%10==3)
+		{
+			int a = healing.checkPress(x,y,state/10);
+			if(a==1)
+				state = 2;
 		}
 	}
 
@@ -96,6 +137,8 @@ class Panel extends JPanel implements Runnable
 	{
 		if(state==-1)
 			running=false;
+		if(state%10==1)
+			outside.update();
 	}
 
 	private void gameRender()
@@ -111,6 +154,12 @@ class Panel extends JPanel implements Runnable
 
 		if(state%10==0)
 			menu.draw(dbg,state/10);
+		else if(state%10==1)
+			outside.draw(dbg);
+		else if(state%10==2)
+			camp.draw(dbg,state/10);
+		else if(state%10==3)
+			healing.draw(dbg);
 	}
 
 	private void paintScreen()

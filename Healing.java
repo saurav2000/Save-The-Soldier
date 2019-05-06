@@ -6,7 +6,7 @@ class Healing
 	int[][] occupancy;
 	long[][] time;
 	int[][][] positions;
-	Image bgImage, minibedOcc, minibedUn, entrance;
+	Image bgImage, minibedOcc, minibedUn, entrance, back, forward;
 	Healing()
 	{
 		occupancy = new int[6][4];
@@ -16,6 +16,8 @@ class Healing
 		minibedUn = ImageLoader.load("minibedUn.png");
 		minibedOcc = ImageLoader.load("minibedOcc.png");
 		entrance =  ImageLoader.load("healentrance.png");
+		back = ImageLoader.load("back.png");
+		forward = ImageLoader.load("forward.png");
 		initialise();
 	}
 
@@ -48,8 +50,10 @@ class Healing
 
 	public void draw(Graphics g)
 	{
-		g.drawImage(bgImage,250,250,null);
+		g.drawImage(bgImage,0,0,null);
 		g.drawImage(entrance,0,450,null);
+		g.drawImage(back,0,0,null);
+		g.drawImage(forward,1500,0,null);
 		for(int i=0;i<6;++i)
 		{
 			for(int j=0;j<4;++j)
@@ -60,5 +64,15 @@ class Healing
 					g.drawImage(minibedUn,positions[i][j][0],positions[i][j][1],null);
 			}
 		}
+	}
+
+	public int checkPress(int x, int y, int k)
+	{
+		if(k==0)
+		{
+			if(x>=0&&y>=0&&x<=100&&y<=100)
+				return 1;
+		}
+		return 0;
 	}
 }
