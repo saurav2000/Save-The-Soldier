@@ -2,14 +2,17 @@ import java.awt.*;
 
 class Menu
 {
-	Image bgImage,menu,about,htp;
+	Image bgImage,menu,about,htp1,htp2,forward,back;
 
 	Menu()
 	{
 		bgImage = ImageLoader.load("menupic.png");
 		menu = ImageLoader.load("menu.png");
 		about = ImageLoader.load("about.png");
-		htp =  ImageLoader.load("htp.png");
+		htp1 =  ImageLoader.load("htp1.png");
+		htp2 =  ImageLoader.load("htp2.png");
+		back = ImageLoader.load("back.png");
+		forward = ImageLoader.load("forward.png");
 	}
 
 	public void draw(Graphics g, int k)
@@ -20,7 +23,16 @@ class Menu
 		else if(k==2)
 			g.drawImage(about,200,50,null);
 		else if(k==3)
-			g.drawImage(htp,200,50,null);
+		{
+			g.drawImage(htp1,200,50,null);
+			g.drawImage(forward,200,750,null);
+		}
+		else if(k==4)
+		{
+			g.drawImage(htp2,200,50,null);
+			g.drawImage(back,200,750,null);
+		}
+
 	}
 
 	public int checkMouse(int x, int y, int k)
@@ -45,6 +57,15 @@ class Menu
 		{
 			if(x>=1043 && y>=608 &&x<=(1043+195) && y<=(608+136))
 				return 0;
+			if(x>=200 && y>=750 && x<=300 && y<=850)
+				return 4;
+		}
+		else if(k==4)
+		{
+			if(x>=1043 && y>=608 &&x<=(1043+195) && y<=(608+136))
+				return 0;
+			if(x>=200 && y>=750 && x<=300 && y<=850)
+				return 3;
 		}
 		return -2;
 	}

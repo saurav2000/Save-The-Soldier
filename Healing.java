@@ -41,7 +41,7 @@ class Healing
 		{
 			for(int j=0;j<4;++j)
 			{
-				if(time[i][j]!=0 && System.currentTimeMillis()-time[i][j]>5000)
+				if(time[i][j]!=0 && System.currentTimeMillis()-time[i][j]>15000+(i+((int)Math.abs(j-1.5)))*1000)
 				{
 					res.add(occupancy[i][j]);
 					occupancy[i][j]=-1;

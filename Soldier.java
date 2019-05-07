@@ -108,4 +108,9 @@ class Soldier
 		timX = x+24;
 		timY = y-r;
 	}
+
+	public int getType()
+	{
+		return type;
+	}
 }

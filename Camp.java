@@ -17,6 +17,7 @@ class Camp
 	private int bedSelected;
 
 	private Image[] docImg;
+	private Image[] solImg;
 	private Image occ,unOcc,menuImage,back,forward,bed;
 
 	Camp()
@@ -30,6 +31,7 @@ class Camp
 		positions = new int[6][2];
 		doctorValue = new int[5];
 		docImg = new Image[5];
+		solImg = new Image[3];
 		loadDoctors();
 		occ = ImageLoader.load("bedOcc.png");
 		unOcc = ImageLoader.load("bedUnocc.png");
@@ -52,6 +54,10 @@ class Camp
 		for(int i=0;i<5;++i)
 		{
 			docImg[i] = ImageLoader.load("d"+(i+1)+".png");
+		}
+		for(int i=0;i<2;++i)
+		{
+			solImg[i] = ImageLoader.load("s"+(i+1)+"h.png");
 		}
 	}
 
@@ -76,11 +82,12 @@ class Camp
 			g.drawImage(bed,296 + 419 *(i%3), 50 + 475 * (i/3),null);
 			if(beds[i]!=null)
 			{
-				beds[i].drawTreatmentTimer(g,370+ 419 *(i%3) ,375 + 475 * (i/3));
+				beds[i].drawTreatmentTimer(g,370+ 419 *(i%3) , 375 + 475 * (i/3));
+				g.drawImage(solImg[beds[i].getType()], 336 + 419 *(i%3) , 125 + 475 * (i/3) ,null);
 				if(beds[i].isTreated())
 				{
 					g.setColor(Color.blue);
-					g.drawString("MOVE",340 + 419 *(i%3),425 + 475 * (i/3));
+					g.drawString("MOVE",345 + 419 *(i%3),425 + 475 * (i/3));
 				}
 			}
 		}
@@ -116,7 +123,7 @@ class Camp
 		if(isValidSelection())
 		{
 			g.setFont(new Font("TimesRoman", Font.BOLD, 21));
-			// System.out.println(g.getFontMetrics().stringWidth("TREAT"));
+			g.setColor(Color.blue);
 			g.drawString("TREAT", offsetX + 410 ,offsetY + 510);
 		}
 
@@ -182,12 +189,19 @@ class Camp
 					if(a>=0 && b<=0 && a<=70 && b>=(-25) && beds[i]!=null)
 					{
 						beds[i] = null;
-						int temp=0;
+						int temp=-1;
 						for(int j=4;j>=0;--j)
 						{
-							if(doctorBusy[j]==i)
-								temp = temp*10+j;
+							if(doctorBusy[j]==i && temp==-1)
+								temp = j;
+							else if(doctorBusy[j] == i)
+							{
+								if(doctorValue[j]<doctorValue[temp])
+									temp=j;
+								doctorBusy[j] = -1;
+							}
 						}
+						doctorBusy[temp] = i;
 						return (temp*10)+4;
 					}
 				}
@@ -237,17 +251,7 @@ class Camp
 		for(int i=0;i<doc.size();++i)
 		{
 			int x = doc.get(i);
-			if(x%10 == 0)
-			{
-				doctorBusy[0]=-1;
-				x/=10;
-			}
-			while(x>0)
-			{
-				doctorBusy[x%10]=-1;
-				x/=10;
-			}
-
+			doctorBusy[x%10]=-1;
 		}
 
 		for(int i=0;i<6;++i)

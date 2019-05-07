@@ -7,7 +7,7 @@ class Game
 
 	public static void main(String[] args)
 	{
-		JFrame frame = new JFrame("Game");
+		JFrame frame = new JFrame("Save The Soldier");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(PWIDTH, PHEIGHT); 
 		frame.setLocationRelativeTo(null);

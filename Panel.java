@@ -56,6 +56,8 @@ class Panel extends JPanel implements Runnable
 				state = 20;
 			else if(a==3)
 				state = 30;
+			else if(a==4)
+				state = 40;
 			else if(a==0)
 				state = 0;
 		}

@@ -105,7 +105,7 @@ class Outside
 			Soldier soldier = soldiers.get(i);
 			if(soldier.checkPress(x,y)==0)
 			{
-				score += ((100-soldier.getDead()) * 10)/100; 
+				score += ((100-soldier.getDead()) * 20)/100; 
 				return soldiers.remove(i);
 			}
 		}
