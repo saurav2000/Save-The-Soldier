@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 class Outside
 {
-	ArrayList<Soldier> soldiers;
-	Image bgImage, sol1, forward;
+	private ArrayList<Soldier> soldiers;
+	private Image bgImage, sol1, forward;
 
 	Outside()
 	{
@@ -60,7 +60,7 @@ class Outside
 		{
 			Soldier soldier = soldiers.get(i);
 			if(soldier.checkPress(x,y)==0)
-				return soldier;
+				return soldiers.remove(i);
 		}
 
 		return null;

@@ -9,8 +9,6 @@ class Game
 	{
 		JFrame frame = new JFrame("Game");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		// frame.setUndecorated(true);
 		frame.setSize(PWIDTH, PHEIGHT); 
 		frame.setLocationRelativeTo(null);
 		Panel p = new Panel(PWIDTH, PHEIGHT);

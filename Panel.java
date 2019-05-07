@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 class Panel extends JPanel implements Runnable
 {
@@ -84,6 +85,8 @@ class Panel extends JPanel implements Runnable
 				state = 1;
 			else if(a==3)
 				state = 3;
+			else if(a%10==4)
+				state = (a-4)*10 + 13;
 		}
 		//healing
 		else if(state%10==3)
@@ -91,6 +94,8 @@ class Panel extends JPanel implements Runnable
 			int a = healing.checkPress(x,y,state/10);
 			if(a==1)
 				state = 2;
+			else if(a==2)
+				state = 3;
 		}
 	}
 
@@ -137,8 +142,13 @@ class Panel extends JPanel implements Runnable
 	{
 		if(state==-1)
 			running=false;
-		if(state%10==1)
+		if(state!=0)
+		{
 			outside.update();
+			ArrayList<Integer> t = healing.update();
+			camp.update(t);
+		}
+		
 	}
 
 	private void gameRender()
@@ -159,7 +169,7 @@ class Panel extends JPanel implements Runnable
 		else if(state%10==2)
 			camp.draw(dbg,state/10);
 		else if(state%10==3)
-			healing.draw(dbg);
+			healing.draw(dbg,state/10);
 	}
 
 	private void paintScreen()

@@ -3,14 +3,14 @@ import java.awt.*;
 
 class Soldier
 {
-	long timeMillis;
-	long initialTime;
+	private long timeMillis;
+	private long initialTime;
 
-	int posX,posY,timX,timY,r,type;
-	long dead,treatment;
+	private int posX,posY,timX,timY,r,type;
+	private long dead,treatment;
 
-	Image image;
-	boolean selected, treated;
+	private Image image;
+	private boolean selected, treated;
 
 	Soldier(int type, int x1, int y1, Image image)
 	{
@@ -61,6 +61,15 @@ class Soldier
 		g.fillArc(timX,timY,r,r,90+a,360-a);
 	}
 
+	public void drawTreatmentTimer(Graphics g, int x, int y)
+	{
+		g.setColor(Color.green);
+		int a = ((int)treatment *360)/100;
+		g.fillArc(x,y,25,25,90,a);
+		g.setColor(Color.white);
+		g.fillArc(x,y,25,25,90+a,360-a);
+	}
+
 	public int checkPress(int x, int y)
 	{
 		if(x>=timX-r && x<=timX+r && y>=timY-r && y<=timY+r)
@@ -72,7 +81,7 @@ class Soldier
 
 	public void setTreating(int power)
 	{
-		timeMillis = (power * 20 * 1000)/dead;
+		timeMillis = (dead * 10 * 1000)/power;
 		selected = true;
 		initialTime = System.currentTimeMillis();
 	}

@@ -1,27 +1,28 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 class Camp
 {
-	int offsetX,offsetY;
-	Soldier[] beds;
-	boolean[] doctorBusy;
-	int[] doctorValue;
-	int[][] positions;
+	private int offsetX,offsetY;
+	private Soldier[] beds;
+	private int[] doctorBusy;
+	private int[] doctorValue;
+	private int[][] positions;
 
-	Soldier tempSoldier;
-	boolean[] doctorMenu;
-	boolean[] doctorSelected;
-	boolean[] bedMenu;
-	int bedSelected;
+	private Soldier tempSoldier;
+	private boolean[] doctorMenu;
+	private boolean[] doctorSelected;
+	private boolean[] bedMenu;
+	private int bedSelected;
 
-	Image[] docImg;
-	Image occ,unOcc,menuImage,back,forward;
+	private Image[] docImg;
+	private Image occ,unOcc,menuImage,back,forward,bed;
 
 	Camp()
 	{
 		beds = new Soldier[6];
-		doctorBusy = new boolean[5];
+		doctorBusy = new int[]{-1,-1,-1,-1,-1};
 		doctorSelected = new boolean[5];
 		bedSelected = -1;
 		bedMenu = new boolean[6];
@@ -35,6 +36,7 @@ class Camp
 		menuImage = ImageLoader.load("bg.png");
 		back = ImageLoader.load("back.png");
 		forward = ImageLoader.load("forward.png");
+		bed = ImageLoader.load("bed.png");
 		offsetX = 350;
 		offsetY = 220;
 	}
@@ -67,9 +69,20 @@ class Camp
 	{
 		g.drawImage(forward,1500,0,null);
 		g.drawImage(back,0,0,null);
+		g.setFont(new Font("TimesRoman", Font.BOLD, 21));
+
 		for(int i=0;i<6;++i)
 		{
-
+			g.drawImage(bed,296 + 419 *(i%3), 50 + 475 * (i/3),null);
+			if(beds[i]!=null)
+			{
+				beds[i].drawTreatmentTimer(g,370+ 419 *(i%3) ,375 + 475 * (i/3));
+				if(beds[i].isTreated())
+				{
+					g.setColor(Color.blue);
+					g.drawString("MOVE",340 + 419 *(i%3),425 + 475 * (i/3));
+				}
+			}
 		}
 	}
 
@@ -99,8 +112,15 @@ class Camp
 			else
 				g.drawImage(occ,200+i*30,300,null);
 		}
+
+		if(isValidSelection())
+		{
+			g.setFont(new Font("TimesRoman", Font.BOLD, 21));
+			// System.out.println(g.getFontMetrics().stringWidth("TREAT"));
+			g.drawString("TREAT", offsetX + 410 ,offsetY + 510);
+		}
+
 		g2.setStroke(oldStroke);
-		// g2.dispose();
 	}
 
 	public void draw(Graphics g, int k)
@@ -130,26 +150,50 @@ class Camp
 						bedSelected=i;
 				}
 			}
-			if(x>=offsetX+350 && x<=offsetX+450 && y>=offsetY+480 && y<=offsetY+530 && isValidSelection())
+			if(x>=offsetX+410 && x<=offsetX+491 && y>=offsetY+485 && y<=offsetY+510 && isValidSelection())
 			{
 				beds[bedSelected] = tempSoldier;
 				int p=0;
 				for(int i=0;i<5;++i)
 				{
 					if(doctorSelected[i])
+					{
 						p+=doctorValue[i];
+						doctorBusy[i] = bedSelected;
+					}
 				}
 				tempSoldier.setTreating(p);
 				return 1;
 			}
 		}
+
 		else
 		{
 			if(x>=0&&y>=0&&x<=100&&y<=100)
 				return 2;
 			else if(x>=1500&&x<=1600&&y>=0&&y<=100)
 				return 3;
+			else
+			{
+				for(int i=0;i<6;++i)
+				{
+					int a = x - (340 + 419 * (i%3));
+					int b = y - (425 + 475 * (i/3));
+					if(a>=0 && b<=0 && a<=70 && b>=(-25) && beds[i]!=null)
+					{
+						beds[i] = null;
+						int temp=0;
+						for(int j=4;j>=0;--j)
+						{
+							if(doctorBusy[j]==i)
+								temp = temp*10+j;
+						}
+						return (temp*10)+4;
+					}
+				}
+			}
 		}
+
 		return 0;
 	}
 
@@ -160,7 +204,7 @@ class Camp
 
 		for(int i=0;i<5;++i)
 		{
-			if(doctorBusy[i])
+			if(doctorBusy[i] != -1)
 				doctorMenu[i]=false;
 			else
 				doctorMenu[i]=true;
@@ -180,9 +224,42 @@ class Camp
 	{
 		boolean k = false;
 
-		for(int i=0;i<6;i++)
+		for(int i=0;i<5;i++)
 			k = k || doctorSelected[i];
 
 		return k&&(bedSelected!= -1);
+	}
+
+	public void update(ArrayList<Integer> doc)
+	{
+		for(int i=0;i<doc.size();++i)
+		{
+			int x = doc.get(i);
+			if(x%10 == 0)
+			{
+				doctorBusy[0]=-1;
+				x/=10;
+			}
+			while(x>0)
+			{
+				doctorBusy[x%10]=-1;
+				x/=10;
+			}
+
+		}
+
+		for(int i=0;i<6;++i)
+		{
+			if(beds[i]!=null)
+				beds[i].update();
+		}
+
+		for(int i=0;i<5;++i)
+		{
+			if(doctorBusy[i] != -1)
+				doctorMenu[i]=false;
+			else
+				doctorMenu[i]=true;
+		}
 	}
 }
