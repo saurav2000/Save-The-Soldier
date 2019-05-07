@@ -110,7 +110,7 @@ class Camp
 					g2.drawRect(offsetX+78+137*i,offsetY+320,59,100);
 			}
 			else
-				g.drawImage(occ,200+i*30,300,null);
+				g.drawImage(occ, offsetX + 78+i*137, offsetY + 320,null);
 		}
 
 		if(isValidSelection())
@@ -216,6 +216,8 @@ class Camp
 		{
 			if(beds[i]==null)
 				bedMenu[i] = true;
+			else
+				bedMenu[i] = false;
 		}
 
 	}
@@ -260,6 +262,14 @@ class Camp
 				doctorMenu[i]=false;
 			else
 				doctorMenu[i]=true;
+		}
+
+		for(int i=0;i<6;++i)
+		{
+			if(beds[i]==null)
+				bedMenu[i] = true;
+			else
+				bedMenu[i] = false;
 		}
 	}
 }

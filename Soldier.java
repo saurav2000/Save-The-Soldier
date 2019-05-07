@@ -22,11 +22,11 @@ class Soldier
 		timX=(x1+24);
 		timY=(y1-r);
 		if(type==0)
-			timeMillis = 6000;
-		else if(type==1)
-			timeMillis = 8000;
-		else
 			timeMillis = 10000;
+		else if(type==1)
+			timeMillis = 15000;
+		else
+			timeMillis = 20000;
 		dead=0;
 		selected=false;
 		treated = false;
@@ -91,8 +91,21 @@ class Soldier
 		return dead>=100;
 	}
 
+	public int getDead()
+	{
+		return (int)dead;
+	}
+
 	public boolean isTreated()
 	{
 		return treatment>=100;
+	}
+
+	public void setPosition(int x, int y)
+	{
+		posX = x;
+		posY = y;
+		timX = x+24;
+		timY = y-r;
 	}
 }
